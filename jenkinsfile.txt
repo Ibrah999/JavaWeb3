@@ -14,7 +14,7 @@ pipeline {
 		sh '/usr/share/maven/bin/mvn test'
             }
         }
-        stage('delopy') {
+        stage('deploy') {
             steps {
                 echo 'Deploying....'
 		sshagent(['Deploy_user']) {
