@@ -21,7 +21,7 @@ pipeline {
                 echo 'Deploying the application'
                 
                 // Deploying to Tomcat using the deploy step
-                deploy adapters: [apache-tomcat-9.0.87/credentialsId: 'YOUR_CREDENTIALS_ID', url: 'http://YOUR_TOMCAT_URL')], contextPath: null, war: '**/*.war'
+                deploy adapters: [apache-tomcat-9.0.87/credentialsId: 'YOUR_CREDENTIALS_ID', url: 'http://http://54.69.89.73:8080/], contextPath: null, war: '**/*.war'
                 
                 // Alternative: Deploying using SSH
                 sshagent(['Deploy_user']) {
