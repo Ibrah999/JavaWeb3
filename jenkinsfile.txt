@@ -1,29 +1,34 @@
 pipeline {
     agent any
-     stages {
+
+    stages {
         stage('Build') {
-           agent{ 
-              label 'node'
-               }
             steps {
                 echo 'Building the application'
-                 // Define build steps here 
-		sh '/usr/share/maven/bin/mvn package'
+                sh '/usr/share/maven/bin/mvn package'
             }
         }
-        stage('test') {
+        
+        stage('Test') {
             steps {
-                echo 'Building..'
-		sh '/usr/share/maven/bin/mvn test'
+                echo 'Running tests'
+                sh '/usr/share/maven/bin/mvn test'
             }
         }
-        stage('deploy') {
+        
+        stage('Deploy') {
             steps {
-                deploy adapters: [tomcat7(credentialsId: '98975053-483c-4347-a4c7-b2d667790f73', path: '', url: 'http://35.88.151.8:8080/')], contextPath: null, war: '**/*.war'                echo 'Deploying....'
-		sshagent(['Deploy_user']) {
-		sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/jenkins pipeline/target/webapp.war centos@172-31-17-194:/home/centos/apache-tomcat-7.0.94/webapps"
-		 }
+                echo 'Deploying the application'
+                
+                // Deploying to Tomcat using the deploy step
+                deploy adapters: [apache-tomcat-9.0.87/credentialsId: 'YOUR_CREDENTIALS_ID', url: 'http://YOUR_TOMCAT_URL')], contextPath: null, war: '**/*.war'
+                
+                // Alternative: Deploying using SSH
+                sshagent(['Deploy_user']) {
+                    sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/jenkins/pipeline/target/webapp.war centos@172-31-28-122/home/centos/apache-tomcat-9.0.87webapps"
+                }
             }
         }
     }
 }
+
